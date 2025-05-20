@@ -1,10 +1,14 @@
 from random import randint
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 
 from django.http import JsonResponse
 from api.load_users import get_users_from_api
 from api.models import User
+from django.views.decorators.csrf import csrf_exempt
+from django_tables2 import RequestConfig
+
+from .tables import UserTable
 from django.core.paginator import Paginator
 
 def load_users_view(request):
@@ -13,35 +17,19 @@ def load_users_view(request):
         get_users_from_api(people_count)
     return JsonResponse({'status': 'ok'})
 
-def users_list_view(request):
-    page = int(request.GET.get('page', 1))
-    page_size = 50
-    users = User.objects.all().order_by('id')
-    paginator = Paginator(users, page_size)
-    page_obj = paginator.get_page(page)
-    users_data = [{
-        'id': user.id,
-        'gender': user.gender,
-        'name': user.name,
-        'surname': user.surname,
-        'phone': user.phone_number,
-        'email': user.email,
-        'address': (f"{user.location.postcode}, {user.location.country}, "
-                    f"{user.location.state}, {user.location.city}, "
-                    f"{user.location.street_number}, {user.location.street_name}"
-                    if user.location else "Адрес не указан")
-
-    } for user in page_obj.object_list]
-
-    return JsonResponse({
-        'users': users_data,
-        'page': page,
-        'num_pages': paginator.num_pages,
-        'total': paginator.count,
-    })
-
+@csrf_exempt
 def index(request):
-    return render(request, 'frontend/index.html')
+    if request.method == 'POST':
+        count = int(request.POST.get('count'))
+        if count > 0:
+            get_users_from_api(count)
+        return redirect('/')
+
+    users = User.objects.all().order_by('id')
+    table = UserTable(users)
+    RequestConfig(request, paginate={"per_page": 20}).configure(table)
+
+    return render(request, 'frontend/index.html', {'table': table})
 
 def user_detail_view(request, user_id):
     user = get_object_or_404(User, id=user_id)
