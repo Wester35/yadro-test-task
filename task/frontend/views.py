@@ -1,3 +1,5 @@
+from random import randint
+
 from django.shortcuts import render, get_object_or_404
 
 from django.http import JsonResponse
@@ -44,3 +46,11 @@ def index(request):
 def user_detail_view(request, user_id):
     user = get_object_or_404(User, id=user_id)
     return render(request, 'frontend/user_detail.html', {'user': user})
+
+def random_user_view(request):
+    count = User.objects.count()
+    if count == 0:
+        return render(request, 'no_users.html')
+    random_index = randint(1, count)
+    random_user = User.objects.all()[random_index]
+    return render(request, 'frontend/user_detail.html', {'user': random_user})
