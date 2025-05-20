@@ -2,3 +2,5 @@
 task/api/__pycache__/
 task/api/migrations/
 task/task/__pycache__/
+task/frontend/__pycache__/
+task/frontend/migrations/
