@@ -7,5 +7,4 @@ class ApiConfig(AppConfig):
     name = 'api'
 
     def ready(self):
-        from .load_users import get_users_from_api
-        threading.Thread(target=get_users_from_api, daemon=True).start()
+        import api.signals
