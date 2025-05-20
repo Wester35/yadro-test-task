@@ -30,7 +30,7 @@ def get_users_from_api(people_count = 1000):
         )
 
         try:
-            user_obj = User.objects.create(
+            User.objects.create(
                 gender=user['gender'],
                 name=user['name']['first'],
                 surname=user['name']['last'],
@@ -39,7 +39,5 @@ def get_users_from_api(people_count = 1000):
                 location=location,
                 picture_thumbnail=user['picture']['thumbnail'],
             )
-            user_obj.profile_link = f"{getattr(settings, 'SITE_BASE_URL')}/{user_obj.id}/"
-            user_obj.save(update_fields=['profile_url'])
         except IntegrityError:
             continue

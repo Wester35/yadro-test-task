@@ -22,15 +22,6 @@ class User(models.Model):
     email = models.EmailField()
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     picture_thumbnail = models.URLField(blank=True)
-    profile_url = models.URLField(unique=True, blank=True)
 
     def __str__(self):
         return f"{self.name} {self.surname} ({self.id})"
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
-        if not self.profile_url:
-            base_url = getattr(settings, 'SITE_BASE_URL', 'http://127.0.0.1:8008')
-            self.profile_url = f"{base_url}/{self.id}"
-            super().save(update_fields=['profile_url'])
