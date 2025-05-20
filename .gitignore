@@ -1,1 +1,4 @@
 .idea
+task/api/__pycache__/
+task/api/migrations/
+task/task/__pycache__/
