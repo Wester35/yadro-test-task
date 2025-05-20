@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>User {{ user.id }} Details</title>
+</head>
+<body>
+    <h1>{{ user.name }} {{ user.surname }}</h1>
+    <p><img src="{{ user.picture_thumbnail }}" alt="User {{ user.name }} thumbnail" /></p>
+    <p>Email: {{ user.email }}</p>
+    <p>Phone: {{ user.phone_number }}</p>
+    <p>Address: {{ user.location }}</p>
+</body>
+</html>
