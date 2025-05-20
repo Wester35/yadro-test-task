@@ -5,9 +5,9 @@ from api.models import User, Location
 from django.conf import settings
 
 
-def get_users_from_api(people_count = 1000):
+def get_users_from_api(people_count = 1000, first = True):
     url = f'https://randomuser.me/api/?results={people_count}'
-    if User.objects.exists():
+    if User.objects.exists() and first:
         print("Пользователи уже загружены.")
         return
 

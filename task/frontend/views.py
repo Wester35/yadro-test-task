@@ -2,7 +2,7 @@ from random import randint
 
 from django.shortcuts import render, get_object_or_404, redirect
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from api.load_users import get_users_from_api
 from api.models import User
 from django.views.decorators.csrf import csrf_exempt
@@ -22,7 +22,7 @@ def index(request):
     if request.method == 'POST':
         count = int(request.POST.get('count'))
         if count > 0:
-            get_users_from_api(count)
+            get_users_from_api(count, first=False)
         return redirect('/')
 
     users = User.objects.all().order_by('id')
