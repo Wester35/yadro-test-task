@@ -60,3 +60,30 @@ def test_user_detail_view(client):
 def test_random_user_view_no_users(client):
     response = client.get(reverse('random_user'))
     assert response.status_code == 200
+
+@pytest.mark.django_db
+def test_user_id_detail_view(client):
+    location = Location.objects.create(
+        street_number=565,
+        street_name='Steeee',
+        city='Cityzen',
+        state='Statesssss',
+        country='Country88',
+        postcode='234543'
+    )
+    user = User.objects.create(
+        name='Django',
+        surname='Framework',
+        gender='male',
+        phone_number='787894952',
+        email='testid@example.com',
+        location=location
+    )
+
+    url = reverse('user_detail', kwargs={'user_id': user.id})
+    response = client.get(url)
+
+    assert response.status_code == 200
+    content = response.content.decode()
+    assert 'Django' in content
+    assert 'Framework' in content
