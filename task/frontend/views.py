@@ -1,4 +1,4 @@
-from random import randint
+from random import choice
 
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -36,9 +36,8 @@ def user_detail_view(request, user_id):
     return render(request, 'frontend/user_detail.html', {'user': user})
 
 def random_user_view(request):
-    count = User.objects.count()
-    if count == 0:
-        return render(request, 'no_users.html')
-    random_index = randint(1, count)
-    random_user = User.objects.all()[random_index]
+    users = list(User.objects.all())
+    if not users:
+        return HttpResponse("Нет пользователей", status=404)
+    random_user = choice(users)
     return render(request, 'frontend/user_detail.html', {'user': random_user})
