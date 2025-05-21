@@ -1,14 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>User {{ user.id }} Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body>
-    <h1>{{ user.name }} {{ user.surname }}</h1>
-    <p><img src="{{ user.picture_thumbnail }}" alt="User {{ user.name }} thumbnail" /></p>
-    <p>Email: {{ user.email }}</p>
-    <p>Phone: {{ user.phone_number }}</p>
-    <p>Address: {{ user.location }}</p>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4>User #{{ user.id }}: {{ user.name }} {{ user.surname }}</h4>
+        </div>
+        <div class="card-body d-flex">
+            <img src="{{ user.picture_thumbnail }}" alt="User {{ user.name }} thumbnail" class="rounded mr-4"
+                 style="width: 110px; height: 110px;"/>
+            <div>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Phone:</strong> {{ user.phone_number }}</p>
+                <p><strong>Location:</strong> {{ user.location }}</p>
+            </div>
+        </div>
+        <div class="card-footer text-right">
+            <a href="{% url 'index' %}" class="btn btn-secondary">Back to list</a>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
