@@ -6,3 +6,4 @@ task/frontend/__pycache__/
 task/frontend/migrations/
 task/staticfiles/
 task/.pytest_cache/
+.obsidian/
