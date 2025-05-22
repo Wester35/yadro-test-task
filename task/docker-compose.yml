@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: taskdb
+      POSTGRES_USER: taskuser
+      POSTGRES_PASSWORD: taskpass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+  web:
+    build: .
+    #user: "${UID:-1000}:${GID:-1000}"
+    command: >
+      sh -c "pytest -v && python manage.py makemigrations && 
+             python manage.py makemigrations api && 
+             python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             python manage.py runserver 0.0.0.0:8008"
+
+    volumes:
+      - .:/app:z
+    ports:
+      - "8008:8008"
+    depends_on:
+      - db
+    environment:
+      - PYTHONPATH=/app
+      - DEBUG=True
+      - DJANGO_SETTINGS_MODULE=task.settings
+      - DB_NAME=taskdb
+      - DB_USER=taskuser
+      - DB_PASSWORD=taskpass
+      - DB_HOST=db
+      - DB_PORT=5432
+
+volumes:
+  postgres_data:

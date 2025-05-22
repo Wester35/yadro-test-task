@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users Table</title>
+    {% load render_table from django_tables2 %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-4">Load Users</h1>
+        <form method="post" class="form-inline mb-3">
+            {% csrf_token %}
+            <input type="number" name="count" class="form-control mr-2" placeholder="Number of users" required>
+            <button type="submit" class="btn btn-primary">Load</button>
+        </form>
+
+        <h2>Users</h2>
+        {% render_table table %}
+    </div>
+<script>
+    document.querySelector("form").addEventListener("submit", function() {
+        alert("Запрос к API отправлен!");
+    });
+</script>
+</body>
+</html>
