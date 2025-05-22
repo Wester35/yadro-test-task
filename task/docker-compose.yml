@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   db:
     image: postgres:16
@@ -10,13 +8,13 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5433:5432"
 
   web:
     build: .
     command: >
       sh -c "python manage.py makemigrations && 
-             python manage.py makemigrations app && 
+             python manage.py makemigrations api && 
              python manage.py migrate &&
              python manage.py collectstatic --noinput &&
              python manage.py runserver 0.0.0.0:8008"
@@ -28,6 +26,7 @@ services:
     depends_on:
       - db
     environment:
+      - PYTHONPATH=/app
       - DEBUG=True
       - DJANGO_SETTINGS_MODULE=task.settings
       - DB_NAME=taskdb
