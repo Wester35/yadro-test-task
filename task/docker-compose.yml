@@ -12,7 +12,7 @@ services:
 
   web:
     build: .
-    user: "${MY_UID}:${MY_GID}" 
+    #user: "${UID:-1000}:${GID:-1000}"
     command: >
       sh -c "pytest -v && python manage.py makemigrations && 
              python manage.py makemigrations api && 
@@ -21,7 +21,7 @@ services:
              python manage.py runserver 0.0.0.0:8008"
 
     volumes:
-      - .:/app
+      - .:/app:z
     ports:
       - "8008:8008"
     depends_on:
